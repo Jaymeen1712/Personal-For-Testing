@@ -1,0 +1,6 @@
+@import '~antd/dist/antd.css'; /* Import Ant Design's default styles */
+
+.ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
