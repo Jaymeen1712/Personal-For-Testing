@@ -1,40 +1,60 @@
-import React, { useRef } from "react";
+// @ts-nocheck
+
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "antd";
-import html2canvas from "html2canvas";
 import ReColumnChart from "../../components/recharts/column";
-import jsPDF from "jspdf";
+import handleGenerateImage from "../../utils/generate-image";
+import handleGeneratePDF from "../../utils/generate-pdf";
 
 const Dashboard = () => {
-  const chartRef = useRef(null); // Create a ref for ReColumnChart
+  const firstChartRef = useRef(null);
+  const secondChartRef = useRef(null);
+  const thirdChartRef = useRef(null);
+  const [pdfOffset, setPdfOffset] = useState({ x: 20, y: 20 });
+  const [pdf, setPdf] = useState(null);
 
-  const handleGeneratePDF = async () => {
-    if (chartRef.current) {
-      try {
-        // Capture the screenshot using html2canvas
-        const canvas = await html2canvas(chartRef.current);
+  useEffect(() => {
+    const newPdf = handleGeneratePDF();
+    setPdf(newPdf);
+  }, []);
 
-        // Convert the canvas to an image URL
-        const image = canvas.toDataURL("image/png");
+  const handleAddImageToPdf = async (chartRef) => {
+    if (pdf && chartRef.current) {
+      const { image, width, height } = await handleGenerateImage(chartRef);
+      const pdfWidth = 210;
+      const scaleFactor = pdfWidth / width;
+      const scaledWidth = width * scaleFactor;
+      const scaledHeight = height * scaleFactor;
 
-        // Initialize a new jsPDF instance
-        const pdf = new jsPDF("landscape", "px", "a4");
-
-        // Add the image to the PDF
-        pdf.addImage(image, "JPEG", 10, 10, 500, 300); // Adjust the coordinates and dimensions as needed
-        pdf.addImage(image, "JPEG", 100, 100, 280, 150); // Adjust the coordinates and dimensions as needed
-
-        // Save the PDF using FileSaver
-        pdf.save("column_chart.pdf");
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
+      pdf.addImage(
+        image,
+        "JPEG",
+        pdfOffset.x,
+        pdfOffset.y,
+        scaledWidth,
+        scaledHeight
+      );
+      setPdfOffset((prev) => ({ ...prev, y: prev.y + scaledHeight + 10 }));
     }
   };
 
   return (
     <div>
-      <ReColumnChart ref={chartRef} />
-      <Button onClick={handleGeneratePDF}>Generate and Download Image</Button>
+      <ReColumnChart ref={firstChartRef} />
+      <Button onClick={() => handleAddImageToPdf(firstChartRef)}>
+        add into pdf
+      </Button>
+      <ReColumnChart ref={secondChartRef} />
+      <Button onClick={() => handleAddImageToPdf(secondChartRef)}>
+        add into pdf
+      </Button>
+      <ReColumnChart ref={thirdChartRef} />
+      <Button onClick={() => handleAddImageToPdf(thirdChartRef)}>
+        add into pdf
+      </Button>
+      <Button onClick={() => pdf && pdf.save("column_chart.pdf")}>
+        Generate PDF
+      </Button>
     </div>
   );
 };
