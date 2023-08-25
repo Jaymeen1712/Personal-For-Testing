@@ -4,7 +4,7 @@ import DownloadPDFUsingHtml2CanvasAndJsPdf from "./components/html2canvas-jspdf"
 const Dashboard = () => {
   return (
     <div>
-      <DownloadPDFUsingHtml2CanvasAndJsPdf />
+      {/* <DownloadPDFUsingHtml2CanvasAndJsPdf /> */}
     </div>
   );
 };
