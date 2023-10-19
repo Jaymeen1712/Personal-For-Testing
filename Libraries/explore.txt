@@ -1,2 +1,5 @@
 axios
 framer-motion
+server-components
+
+Prisma
