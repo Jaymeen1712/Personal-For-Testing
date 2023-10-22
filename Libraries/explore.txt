@@ -3,3 +3,4 @@ framer-motion
 server-components
 
 Prisma
+Zegocloud(voice and video chat api)
