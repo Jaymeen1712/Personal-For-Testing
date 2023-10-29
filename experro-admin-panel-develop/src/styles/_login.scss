@@ -1,0 +1,82 @@
+.login-top-section {
+ svg {
+  display: block;
+ }
+}
+.login-section {
+  height: 100%;
+  background-color: $background-color-light;
+}
+
+.login-popup {
+  width: 480px;
+  height: 100%;
+  margin: auto;
+  @media screen and (max-width: 1279px) {
+    padding-top: 70px;
+  }
+  .ant-typography {
+    //display: inline-block;
+    line-height: 16px;
+  }
+}
+
+.login-popup-inner {
+  display: block;
+  width: 100%;
+  background: $white;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(6, 25, 56, 0.06);
+  .ant-btn {
+    svg {
+      display: inline-block;
+      margin-right: 10px;
+      vertical-align: text-bottom;
+    }
+  }
+  h1 {
+    margin-bottom: 8px;
+  }
+  p {
+    line-height: 20px;
+    color: $black-6;
+  }
+  .ant-select {
+    .ant-select-arrow {
+      width: 20px;
+      height: 20px;
+      transform: translateY(-50%);
+      margin-top: 0;
+      justify-content: center;
+      svg {
+        path {
+          fill: $text-color-tertiary;
+        }
+      }
+    }
+  }
+}
+
+.login-input {
+  position: relative;
+  margin-bottom: 32px;
+  &.has-error {
+    .login-error-message {
+      opacity: 1;
+    }
+    input.ant-input {
+      border-color: $highlight-color;
+    }
+  }
+}
+
+.login-error-message {
+  position: absolute;
+  bottom: -20px;
+  height: 18px !important;
+  margin: 0;
+  color: $highlight-color;
+  font-size: 12px !important;
+  opacity: 0;
+  transition: color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}

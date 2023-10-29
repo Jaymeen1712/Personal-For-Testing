@@ -1,0 +1,76 @@
+.workspace-grid {
+    .ant-col {
+        min-height: 166px;
+        @media(min-width: 1980px) {
+            flex: 0 0 16.66%;
+            max-width: 16.66%;
+        }
+        @media(min-width: 1170px) and (max-width:1280px) {
+            flex: 0 0 33.33%;
+            max-width: 33.33%; 
+        }
+    }
+    .ant-card {
+        height: 100%;
+        cursor: pointer;
+    }
+    .ant-card-head-wrapper {
+        align-items: flex-start;
+    }
+    .ant-card-body {
+        height: calc(100% - 41px);
+        display: flex;
+        flex-direction: column;
+        padding-top: 8px;
+    }
+    .card-description {
+        flex: 1 0 auto;
+        color: $black-6;
+    }
+}
+
+.edit-description {
+    color: $black-6;
+}
+
+.workspace-btn-section {
+    opacity: 0;
+    visibility: hidden;
+    .ant-typography {
+        margin-bottom: 0px;
+        width: 26px;
+        height: 26px;
+
+        .ant-typography-copy {
+            width: 100%;
+            height: 100%;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            margin: 0px;
+            border-radius: 4px;
+            &:hover {
+                background-color:  $black-2 !important;
+
+                svg {
+                    path {
+                        fill: $black-6;
+                    }
+                }
+            }
+        }
+    }
+}
+.ant-card-hoverable {
+    &:hover {
+        .workspace-btn-section { 
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+.workspace-page-wrapper {
+    > .ant-layout-content {
+        overflow-y: auto;
+    }
+}

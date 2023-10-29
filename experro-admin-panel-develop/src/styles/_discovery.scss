@@ -1,0 +1,318 @@
+// re-ranking-section CSS start
+
+.subtitle-with-border {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $border-color-split;
+  margin-bottom: 32px;
+}
+
+.re-ranking-section {
+  .ant-card {
+    &.ant-card-bordered {
+      border: 1px solid $border-color-split;
+      border-radius: 8px;
+    }
+    .ant-card-body {
+      padding: 16px;
+    }
+    + .ant-card {
+      margin-top: 16px;
+    }
+    &.active {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 1px $primary-color;
+    }
+  }
+  .ant-radio-wrapper {
+    .ant-radio + span {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      margin-left: 24px;
+      padding: 0;
+      margin-bottom: 8px;
+    }
+  }
+  .ranking-card-body {
+    margin-left: 40px;
+    p {
+      margin-bottom: 0;
+      line-height: 18px;
+      + .ant-btn {
+        margin-top: 24px;
+      }
+    }
+    h5 {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 14px;
+      padding-bottom: 12px;
+      color: $text-color-gray-light;
+      border-bottom: 1px solid $border-color-split;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.custom-strategy-section {
+  margin-top: 40px;
+}
+
+.custom-strategy-form-sction {
+  .custom-strategy-form-sction-top {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+    .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional):before{
+      display: none;
+    }
+   .ant-form-item {
+     width: 412px;
+   }
+   .ant-btn {
+     margin-top: -6px;
+   }
+  .ant-select-selection-item-content {
+    svg {
+      display: none;
+    }
+  }
+  }
+}
+
+.filed-weightage {
+  + .filed-weightage {
+    margin-top: 12px;
+  }
+  .filed-weightage-title {
+    padding: 13px 16px;
+  }
+  .ant-form-item {
+    width: 64px;
+    .ant-input-number {
+      width: auto;
+    }
+    + span {
+      margin-left: 8px;
+      font-size: 14px;
+      line-height: 18px;
+      color: $text-color-tertiary;
+    }
+  }
+  .ant-btn.ant-btn-icon-only {
+    svg path {
+      fill: $text-color-tertiary;
+      stroke: $text-color-tertiary;
+    }
+  }
+}
+
+.re-ranking-details {
+  width: calc(100% - 454px);
+  padding-right: 80px;
+}
+
+.re-ranking-images {
+  width: 454px;
+  img {
+    width: 136px;
+    height: 150px;
+  }
+  > div {
+    position: relative;
+    + div {
+      margin-left: 16px;
+    }
+    &:first-child {
+      .image-count {
+        width: 26px;
+        height: 26px;
+        background: $primary-color;
+        border: 1px solid $primary-color-outline;
+        color: $white;
+        left: -13px;
+      }
+    }
+    &:last-child {
+      .image-count {
+        border: 1px solid $border-color-split;
+        width: 18px;
+        height: 18px;
+        left: -9px;
+        font-weight: 400;
+      }
+    }
+  }
+  .image-count {
+    border: 1px solid $border-color-split;
+    background: $white;
+    box-shadow: 0px 6px 10px -1px rgba(6, 25, 56, 0.07);
+    border-radius: 40px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    position: absolute;
+    z-index: 5;
+    top: 8px;
+    left: -8px;
+  }
+  .re-ranking-images-title {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    color: $text-color-gray-light;
+    margin-top: 6px;
+    + .re-ranking-images-title {
+      font-weight: 600;
+      margin-left: 6px;
+    }
+  }
+}
+
+.custom-stratey-form-fields-list {
+  .ant-select-item-option-content {
+    display: flex;
+    align-items: center;
+    svg {
+      margin-right: 12px;
+    }
+  }
+}
+
+.custom-skeleton {
+  background: $border-color-base;
+  opacity: 0.6;
+  border-radius: 9px;
+  height: 6px;
+  margin: 12px 0 0px 0;
+  &.small-skeleton {
+    width: 64px;
+    margin-top: 6px;
+  }
+}
+
+// discovery CSS start - once Re-Ranking PR merged in this branch move this CSS in that file
+
+.discovery-setting-form {
+  height: auto;
+  .label-switch-inline {
+    width: 100%;
+    margin-bottom: 24px;
+    .ant-form-item-row {
+      justify-content: space-between;
+      width: 100%;
+    }
+    .ant-form-item-control {
+      order: 1;
+    }
+    .ant-form-item-label {
+      order: 0;
+      margin: 0;
+    }
+  }
+  .switch-custom-label {
+    > div {
+      align-items: center;
+    }
+    .ant-form-item-label {
+      > label {
+        font-size: 16px;
+        line-height: 24px;
+        color: $text-color;
+        height: auto;
+      }
+    }
+    .ant-form-item-control-input {
+      min-height: auto;
+    }
+  }
+}
+
+.environment-switch {
+  &.with-checkbox {
+    > .ant-form-item {
+      width: 20px;
+      + div {
+        width: calc(100% - 36px);
+      }
+    }
+    label + p {
+      margin: 0;
+    }
+  }
+}
+
+.gray-bg-section {
+  background: $background-color-light;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.score-section {
+  margin-left: 36px;
+  margin-bottom: 24px;
+}
+
+.ant-modal-body {
+  .custom-label-input {
+    .react-tags-wrapper {
+      width: 100%;
+    }
+  }
+}
+
+.custom-radio-group {
+  .ant-radio-group {
+    display: flex;
+    .ant-radio-button-wrapper {
+      width: 50%;
+      text-align: center;
+    }
+  }
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox:after, .ant-checkbox:hover:after {
+  visibility: hidden;
+}
+
+.ant-radio-button-wrapper-checked {
+  svg, path {
+    fill: $white;
+  }
+}
+
+.input-section {
+  > div + div {
+    margin-top: 12px;
+  }
+}
+
+.sparkle-icon-col {
+  padding-left: 0 !important;
+}
+.sparkle-icon {
+  margin-left: auto;
+  height: 16px;
+  width: 16px;
+  // margin-right: 40px;
+}
+
+
+.disabled-text {
+  .label-switch-inline .ant-form-item-label>label {
+    color: $text-color-tertiary;
+  }
+}
+
+.slider-digit {
+  width: 48px;
+  text-align: center;
+}

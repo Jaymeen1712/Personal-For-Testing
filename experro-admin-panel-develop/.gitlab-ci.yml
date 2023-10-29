@@ -1,0 +1,329 @@
+variables:
+  DOCKER_HOST: tcp://docker-dind:2375/
+  DOCKER_TLS_CERTDIR: ""
+  VERSION: $CI_PIPELINE_ID
+  IMAGE_TAG: $CI_COMMIT_REF_NAME-$CI_PIPELINE_ID
+  IMAGE_NAME: $CI_PROJECT_NAME
+  GIT_SUBMODULE_STRATEGY: recursive
+
+# image: shaggy219/aws-google-sdk:v1
+stages:
+  - Static Analysis
+  - Test
+  - kube Build Image
+  - kube Deploy on Dev
+  - kube Deploy on Staging
+  - kube Deploy on Production
+
+services:
+  - docker:19.03.12-dind
+
+# cache:
+#   key: ${CI_COMMIT_REF_SLUG}
+#   paths:
+#     - .npm/
+#     - node_modules
+
+before_script:
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - ssh-keyscan gitssh.rapidops.com >> ~/.ssh/known_hosts
+
+
+lint:
+  stage: Static Analysis
+  image: gcr.io/experro-dev/experro-base:node-sdk
+  script:
+    - npm i
+    - npm run lint
+  when: always
+  only:
+    - merge_requests
+  tags:
+    - k8s-experro-runner
+
+
+unit-test:
+  stage: Test
+  image: gcr.io/experro-dev/experro-base:node-sdk
+  script:
+    - npm i
+    - npm run test:coverage
+    - test -f junit.xml && grep -L "<failure" junit.xml
+  needs:
+    - lint
+  artifacts:
+    when: always
+    paths:
+      - coverage
+    reports:
+      junit:
+        - junit.xml
+      cobertura:
+        - coverage/cobertura-coverage.xml
+    expire_in: 4 days
+  only:
+    - merge_requests
+  tags:
+    - k8s-experro-runner
+
+
+kube-dev-build:
+  stage: kube Build Image
+  image: gcr.io/experro-dev/experro-base:sdk-trivy-v2
+  script:
+    - echo "$EXPERRO_DEV" > dev_key.json
+    - gcloud auth activate-service-account --project $PROJECT_ID_DEV --key-file=dev_key.json
+    - gcloud auth configure-docker
+    - echo Building the Docker image...
+    #- IMAGE_TAG=`echo $IMAGE_TAG | sed -e 's/\//-/g'`
+    #- docker build --no-cache -t gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile .
+    - |
+      if [[ "$USE_DOCKER_CACHE" == false ]]; then # docker cache is set to 1
+        echo "Docker cache disabled"
+        docker build --no-cache -t gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile.dev .
+      else  # docker cache is set to 0
+        echo "Docker cache enabled"
+        docker build -t gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile.dev .
+      fi
+    - trivy image gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG --exit-code 0 --severity CRITICAL,HIGH --no-progress --output "gl-container-scanning-report.json"
+    - docker push gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG
+    - docker images --format '{{.ID}}\t{{.Repository}}:{{.Tag}}' gcr.io/experro-dev/admin-panel| sort -k 2 | tac | awk 'NR>7 {print $1}' | tac | xargs -r docker rmi -f
+  artifacts:
+      paths:
+        - gl-container-scanning-report.json
+      expire_in: 180 days
+  only:
+    - gitlab-ci-test
+    - develop
+    #    - /^develop-[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+    #- /^feature\/[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+  tags:
+    - k8s-experro-runner
+
+
+kube-staging-build:
+  stage: kube Build Image
+  image: gcr.io/experro-staging/experro-base:sdk-trivy-v2
+  script:
+    - echo "$EXPERRO_STAGING" > staging_key.json
+    - gcloud auth activate-service-account --project $PROJECT_ID_STAGING --key-file=staging_key.json
+    - gcloud auth configure-docker
+    - echo Building the Docker image...
+    #- IMAGE_TAG=`echo $IMAGE_TAG | sed -e 's/\//-/g'`
+    #- docker build --no-cache -t gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile .
+    - |
+      if [[ "$USE_DOCKER_CACHE" == false ]]; then # docker cache is set to 1
+        echo "Docker cache disabled"
+        docker build --no-cache -t gcr.io/$PROJECT_ID_STAGING/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile.staging .
+      else  # docker cache is set to 0
+        echo "Docker cache enabled"
+        docker build -t gcr.io/$PROJECT_ID_STAGING/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile.staging .
+      fi
+    - trivy image gcr.io/$PROJECT_ID_STAGING/$IMAGE_NAME:$IMAGE_TAG --exit-code 0 --severity CRITICAL,HIGH --no-progress --output "gl-container-scanning-report.json"
+    - docker push gcr.io/$PROJECT_ID_STAGING/$IMAGE_NAME:$IMAGE_TAG
+    - docker images --format '{{.ID}}\t{{.Repository}}:{{.Tag}}' gcr.io/experro-staging/admin-panel | sort -k 2 | tac | awk 'NR>7 {print $1}' | tac | xargs -r docker rmi -f
+  artifacts:
+      paths:
+        - gl-container-scanning-report.json
+      expire_in: 180 days
+  only:
+    - staging
+  #   - /^staging-[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+  #   - /^feature\/[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+  tags:
+    - k8s-experro-runner-staging
+
+
+kube-prod-build:
+  stage: kube Build Image
+  image: gcr.io/experro/experro-base:sdk-trivy-v2
+  script:
+    - echo "$EXPERRO_PROD" > prod_key.json
+    - gcloud auth activate-service-account --project $PROJECT_ID_PROD --key-file=prod_key.json
+    - gcloud auth configure-docker
+    - echo Building the Docker image...
+    #- IMAGE_TAG=`echo $IMAGE_TAG | sed -e 's/\//-/g'`
+    #- docker build --no-cache -t gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile .
+    - |
+      if [[ "$USE_DOCKER_CACHE" == false ]]; then # docker cache is set to 1
+        echo "Docker cache disabled"
+        docker build --no-cache -t gcr.io/$PROJECT_ID_PROD/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile .
+      else  # docker cache is set to 0
+        echo "Docker cache enabled"
+        docker build -t gcr.io/$PROJECT_ID_PROD/$IMAGE_NAME:$IMAGE_TAG --file Dockerfile .
+      fi
+    - trivy image gcr.io/$PROJECT_ID_PROD/$IMAGE_NAME:$IMAGE_TAG --exit-code 0 --severity CRITICAL,HIGH --no-progress --output "gl-container-scanning-report.json"
+    - docker push gcr.io/$PROJECT_ID_PROD/$IMAGE_NAME:$IMAGE_TAG
+    - docker images --format '{{.ID}}\t{{.Repository}}:{{.Tag}}' gcr.io/experro/admin-panel | sort -k 2 | tac | awk 'NR>7 {print $1}' | tac | xargs -r docker rmi -f
+  artifacts:
+      paths:
+        - gl-container-scanning-report.json
+      expire_in: 180 days
+  only:
+    - master
+  tags:
+    - k8s-experro-runner-prod
+
+
+##################################### Dev Deployment ##########################################
+############################################################################################
+
+kube-deploy-dev:
+  stage: kube Deploy on Dev
+  image: gcr.io/experro-dev/experro-base:node-sdk
+  script:
+    - echo "$EXPERRO_DEV" > dev_key.json
+    - gcloud auth activate-service-account --project $PROJECT_ID_DEV --key-file=dev_key.json
+    - gcloud container clusters get-credentials $GKE_CLUSTER_DEV --region $GKE_REGION_DEV --project $PROJECT_ID_DEV
+    - sleep 3s
+    - kubectl config set-context --current --namespace=dev-apps
+    - kubectl set image deployment admin-panel admin-panel=gcr.io/$PROJECT_ID_DEV/$IMAGE_NAME:$IMAGE_TAG
+  needs:
+    - kube-dev-build
+  environment:
+    name: dev
+    url: https://admin.experro-dev.app
+  only:
+    - gitlab-ci-test
+    - develop
+#    - /^develop-[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+    #- /^feature\/[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+  tags:
+    - k8s-experro-runner
+
+
+##################################### Staging Deployment ##########################################
+############################################################################################
+
+kube-deploy-staging:
+  stage: kube Deploy on Staging
+  image: gcr.io/experro-staging/experro-base:node-sdk
+  script:
+    - echo "$EXPERRO_STAGING" > staging_key.json
+    - gcloud auth activate-service-account --project $PROJECT_ID_STAGING --key-file=staging_key.json
+    - gcloud container clusters get-credentials $GKE_CLUSTER_STAGING --region $GKE_REGION_STAGING --project $PROJECT_ID_STAGING
+    - sleep 3s
+    - kubectl config set-context --current --namespace=staging-apps
+    - kubectl set image deployment admin-panel admin-panel=gcr.io/$PROJECT_ID_STAGING/$IMAGE_NAME:$IMAGE_TAG
+  needs:
+    - kube-staging-build
+  environment:
+    name: staging
+    url: https://admin.experro-staging.app
+  only:
+    - staging
+  #    - /^staging-[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+  #    - /^feature\/[a-zA-Z0-9]+(?:.[a-zA-Z0-9]+)+$/
+  tags:
+    - k8s-experro-runner-staging
+
+##################################### Prod Deployment ##########################################
+############################################################################################
+
+kube-deploy-production:
+  stage: kube Deploy on Production
+  image: gcr.io/experro/experro-base:node-sdk
+  script:
+    - echo "$EXPERRO_PROD" > prod_key.json
+    - gcloud auth activate-service-account --project $PROJECT_ID_PROD --key-file=prod_key.json
+    - gcloud container clusters get-credentials $GKE_CLUSTER_PROD --region $GKE_REGION_PROD --project $PROJECT_ID_PROD
+    - sleep 3s
+    - kubectl config set-context --current --namespace=prod-apps
+    - kubectl set image deployment admin-panel admin-panel=gcr.io/$PROJECT_ID_PROD/$IMAGE_NAME:$IMAGE_TAG
+  needs:
+    - kube-prod-build
+  environment:
+    name: prod
+    url: https://admin.experro.app
+  only:
+    - master
+  tags:
+    - k8s-experro-runner-prod
+  when: manual
+
+    ########################################### Staging Deployment ###################################
+    ########################################################################################
+
+    #deploy_generate_yml_files_staging:
+    #  stage: Deploy on Staging
+    #  script:
+    #    - node deploy/create-deployment-yml-files.js staging US staging-apps
+    #  environment:
+    #    name: staging
+    #    url: https://accounts-staging.salesmate.io
+    #  only:
+    #    refs:
+    #      - master
+    #  when: manual
+  #
+  #deploy_apply_yml_files_staging:
+  #  stage: Deploy on Staging
+  #  script:
+  #    - sudo gcloud container clusters get-credentials $GKE_CLUSTER_DEV --region $GKE_REGION --project $PROJECT_ID
+  #    - sleep 3s
+  #    - sudo kubectl config set-context --current --namespace=staging-apps
+  #    - sudo kubectl config current-context
+  #    - sudo kubectl apply -f deploy/ymls/deployments -R
+  #    - sudo kubectl apply -f deploy/ymls/crons -R
+  #    - sudo kubectl apply -f deploy/ymls/networking -R
+  #  environment:
+  #    name: staging
+  #    url: https://accounts-staging.salesmate.io
+  #  only:
+  #    refs:
+  #      - master
+  #  when: manual
+
+######################################## PRODUCTION Deployment ##################################################
+##############################################################################################################
+
+# deploy_apply_yml_files_production:
+#   stage: Deploy on Production
+#   script:
+#     - node deploy/create-deployment-yml-files.js production us prod-apps
+#     - sudo gcloud container clusters get-credentials $GKE_CLUSTER_PROD --region $GKE_REGION_PROD --project $PROJECT_ID
+#     - sleep 3s
+#     - sudo kubectl config set-context --current --namespace=prod-apps
+#     - sudo kubectl config current-context
+#     - sudo kubectl apply -f deploy/ymls/deployments -R
+#     - sudo kubectl apply -f deploy/ymls/crons -R
+#     #- sudo kubectl apply -f deploy/ymls/networking -R
+#   needs:
+#     - build
+#   environment:
+#     name: production
+#     url: https://accounts.salesmate.io
+#   only:
+#     - /^master-us-[0-9]+(?:.[0-9]+)+$/
+#   tags:
+#     - salesmate-ci
+#   when: manual
+
+############################################## EU Production Deployment ######################################
+###########################################################################################################
+
+# deploy_apply_yml_files_eu_production:
+#   stage: Deploy on Production
+#   script:
+#     - node deploy/create-deployment-yml-files.js production eu prod-apps
+#     - sudo gcloud container clusters get-credentials $GKE_CLUSTER_EU --region $GKE_REGION_PROD_EU --project $PROJECT_ID
+#     - sleep 3s
+#     - sudo kubectl config set-context --current --namespace=prod-apps
+#     - sudo kubectl config current-context
+#     - sudo kubectl apply -f deploy/ymls/deployments -R
+#     - sudo kubectl apply -f deploy/ymls/crons -R
+#     #- sudo kubectl apply -f deploy/ymls/networking -R
+#   needs:
+#     - build
+#   environment:
+#     name: eu-production
+#     url: https://accounts.salesmate-eu.io
+#   only:
+#     - /^master-eu-[0-9]+(?:.[0-9]+)+$/
+#   tags:
+#     - salesmate-ci
+#   when: manual

@@ -1,0 +1,233 @@
+// Two Factor Authentication CSS
+
+.ant-tabs.ant-tabs-top.security-tab {
+  .ant-tabs-nav {
+    margin-bottom: 40px;
+  }
+
+  h3 {
+    font-size: $font-size-lg;
+    line-height: 20px;
+  }
+
+  .ant-checkbox+span {
+    padding-left: 24px;
+  }
+
+  .filters .ant-space-item-main {
+    margin-left: 0;
+
+    .ant-dropdown-trigger .ant-space-item {
+      
+      color: $text-color;
+    }
+  }
+}
+.ant-dropdown-menu {
+  overflow: hidden;
+}
+.ant-dropdown-menu-item {
+  &:not(.ant-dropdown-menu-item-disabled) {
+    &:hover {
+      .ant-dropdown-menu-title-content {
+        color: $text-color;
+      }
+    }
+    &.text-red {
+      &:hover {
+        .ant-dropdown-menu-title-content {
+          color: $error-color;
+        }
+      }
+    }
+  }
+
+  &.ant-dropdown-menu-item-danger {
+    &:hover {
+      background-color: $primary-1;
+      .ant-dropdown-menu-title-content {
+        color: $error-color;
+      }
+
+    }
+  }
+}
+
+.security-box {
+  border: 1px solid $black-3;
+  border-radius: 8px;
+  margin-left: 40px;
+}
+
+.ant-btn {
+  &.login-black-back-btn {
+    border-color: transparent;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    justify-content: center;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+    }
+
+    &:hover {
+      background-color: transparent;
+      border-color: transparent;
+    }
+  }
+}
+
+button.ant-btn.ant-btn-link.secondary-link.m-0,
+button.ant-btn.ant-btn-default.login-black-back-btn.padding-0 {
+  margin: 0;
+}
+
+a.ant-btn.ant-btn-link {
+  padding: 0 !important;
+}
+
+// cms-tokens page CSS
+
+.cms-tokens {
+  .ant-tabs.ant-tabs-top .ant-tabs-nav {
+    margin-bottom: 40px;
+  }
+}
+
+.form-top-border {
+  padding-top: 16px;
+  box-shadow: inset 0px 1px 0px $border-color-split;
+}
+
+.star-icon {
+  .ant-form-item-label>label {
+    &:before {
+      display: inline-block;
+      margin-right: 2px;
+      color: $error-color-hover;
+      font-weight: bold;
+      font-size: 14px;
+      font-family: SimSun, sans-serif;
+      line-height: 1;
+      content: '*';
+    }
+  }
+}
+
+// edit profile css
+
+.user-profile-image {
+  position: relative;
+
+  .ant-avatar-string {
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  .ant-btn.ant-btn-icon-only {
+    position: absolute;
+    right: 0;
+    bottom: -4px;
+    background: $black-base;
+    border: 2px solid $white;
+    border-radius: 50%;
+
+    .anticon,
+    svg {
+      display: flex;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      margin: auto;
+      stroke: transparent;
+      path {
+        fill: $white;
+      }
+    }
+  }
+}
+
+.profile-content {
+  h3 {
+    font-size: $font-size-lg;
+    line-height: 20px;
+  }
+
+  p {
+    margin: 0;
+    color: $text-color-gray-light;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  button.ant-btn-link {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .ant-typography {
+    font-size: $font-size-sm;
+    cursor: pointer;
+    font-weight: 500;
+  }
+}
+
+.list-user-filter {
+  .filters {
+    .ant-select {
+      margin-left: 8px;
+    }
+    .ant-space-item-main {
+      // margin-left: 0px;
+      // + .ant-space-item-main {
+      //   margin-left: 16px;
+      // }
+      span {
+        display: flex;
+        align-items: center;
+      }
+      + span {
+        margin-right: 8px;
+      }
+    }
+    .ant-select-selection-item-content {
+      color: $text-color;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: block !important;
+    }
+    .ant-select-multiple {
+      .ant-select-selector {
+        padding-left: 8px;
+      }
+      .ant-select-selection-item {
+        height: auto;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+        border: none;
+      }
+    }
+    span.ant-select-selection-item-remove {
+      display: none !important;
+    }
+  }
+}
+.ant-select-dropdown {
+  .ant-select-empty {
+    .no-user-text {
+     
+      p {
+        color: $text-color-tertiary;
+        margin-bottom: 0px;
+        padding: 7px 5px !important;
+        border-bottom: 1px solid $border-color-split;
+      }
+    }
+  }
+}

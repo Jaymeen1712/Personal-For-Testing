@@ -1,0 +1,216 @@
+$white: #fff;
+$black: #000;
+
+$background-color-light: $black-1; // background of header and selected item
+$background-color-base: $black-2; // Default grey background color
+
+// Border color
+$border-color-base: $black-4; // base border outline a component
+$border-color-split: $black-3; // split border inside a component
+$border-color-inverse: $white;
+$border-width-base: 1px; // width of the border for a component
+$border-style-base: solid; // style of a components border
+
+// Base background color for most components
+$component-background: #fff;
+
+// Shadow
+$shadow-color: rgba(0, 0, 0, 0.15); // experro:TODO
+$shadow-color-inverse: $component-background;
+$shadow-1-up: 0 -6px 16px -8px rgba(0, 0, 0, 0.08), 0 -9px 28px 0 rgba(0, 0, 0, 0.05),
+  0 -12px 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-1-down: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05),
+  0 12px 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-1-left: -6px 0 16px -8px rgba(0, 0, 0, 0.08), -9px 0 28px 0 rgba(0, 0, 0, 0.05),
+  -12px 0 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-1-right: 6px 0 16px -8px rgba(0, 0, 0, 0.08), 9px 0 28px 0 rgba(0, 0, 0, 0.05),
+  12px 0 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-2: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05);
+$box-shadow-base: $shadow-2;
+
+// >>> Primary
+$primary-color: $blue-base;
+$primary-color-hover: $blue-8;
+$primary-color-focus: $blue-8;
+$primary-color-active: $blue-9;
+$primary-color-outline: $blue-3;
+
+$processing-color: $blue-base;
+
+// >>> Success
+$success-color: $green-base;
+$success-color-hover: $green-8;
+$success-color-focus: $green-base;
+$success-color-active: $green-9;
+$success-color-outline: $green-3;
+$success-color-deprecated-bg: $green-2;
+$success-color-deprecated-border: $green-5;
+
+// >>> Warning
+$warning-color: $orange-base;
+$warning-color-hover: $orange-7;
+$warning-color-focus: $orange-5;
+$warning-color-active: $orange-8;
+$warning-color-outline: $orange-3;
+$warning-color-deprecated-bg: $orange-1;
+$warning-color-deprecated-border: $orange-3;
+
+// >>> Error
+$error-color: $red-base;
+$error-color-hover: $red-8;
+$error-color-focus: $red-base;
+$error-color-active: $red-9;
+$error-color-outline: $red-3;
+$error-color-deprecated-bg: $red-1;
+$error-color-deprecated-border: $red-4;
+
+// >>> info (blue)
+$info-color: $geekblue-base;
+$info-color-hover: $geekblue-8;
+$info-color-focus: $geekblue-6;
+$info-color-active: $geekblue-9;
+$info-color-deprecated-bg: $geekblue-1;
+$info-color-deprecated-border: $geekblue-4;
+
+// >>> secondary (gray)
+$default-color: $white;
+$default-color-hover: $background-color-base;
+$default-color-focus: $white;
+$default-color-active: $background-color-base;
+
+$highlight-color: $red-6;
+$normal-color: #d9d9d9;
+
+// Color used by default to control hover and active backgrounds and for
+// alert info backgrounds.
+$primary-1: $blue-1; // replace tint($primary-color, 90%)
+$primary-2: $blue-2; // replace tint($primary-color, 80%)
+$primary-3: $blue-3; // unused
+$primary-4: $blue-4; // unused
+$primary-5: $blue-5; // color used to control the text color in many active and hover states, replace tint($primary-color, 20%)
+$primary-6: $primary-color; // color used to control the text color of active buttons, don't use, use $primary-color
+$primary-7: $blue-8; // replace shade($primary-color, 5%)
+$primary-8: $blue-9; // unused
+$primary-9: $blue-10; // unused
+$primary-10: darken($blue-10, 5%); // unused
+
+// Base Scaffolding Variables
+// ---
+
+// Background color for `<body>`
+$body-background: #fff;
+// Popover background color
+$popover-background: $component-background;
+$popover-customize-border-color: $border-color-split;
+$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
+$code-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+$text-color: $black-base;
+$text-color-secondary: $black-8;
+$text-color-tertiary: $black-5;
+$text-color-gray: $black-7;
+$text-color-gray-light: $black-6;
+$text-color-inverse: $white;
+$icon-color: inherit;
+$icon-color-hover: fade($black, 75%);
+$heading-color: $text-color;
+$text-color-dark: $black-10;
+$text-color-secondary-dark: lighten($text-color-dark, 5%);
+$text-selection-bg: $primary-color;
+$font-variant-base: tabular-nums;
+$font-feature-settings-base: 'tnum';
+$font-size-base: 14px;
+$font-size-lg: $font-size-base + 2px;
+$font-size-sm: 12px;
+$heading-1-size: ceil($font-size-base * 3.41);
+$heading-2-size: ceil($font-size-base * 2.81);
+$heading-3-size: ceil($font-size-base * 2.41);
+$heading-4-size: ceil($font-size-base * 2);
+$heading-5-size: ceil($font-size-base * 1.71);
+$heading-6-size: ceil($font-size-base * 1.41);
+// https://github.com/ant-design/ant-design/issues/20210
+$line-height-base: 1.2857;
+$border-radius-base: 4px;
+$border-radius-sm: $border-radius-base;
+
+// control border
+$control-border-radius: $border-radius-base;
+
+// arrow border
+$arrow-border-radius: 2px;
+
+// vertical paddings
+$padding-lg: 24px; // containers
+$padding-md: 16px; // small containers and buttons
+$padding-sm: 12px; // Form controls and items
+$padding-xs: 8px; // small items
+$padding-xss: 4px; // more small
+
+// vertical padding for all form controls
+$control-padding-horizontal: $padding-sm;
+$control-padding-horizontal-sm: $padding-xs;
+
+// vertical margins
+$margin-lg: 24px; // containers
+$margin-md: 16px; // small containers and buttons
+$margin-sm: 12px; // Form controls and items
+$margin-xs: 8px; // small items
+$margin-xss: 4px; // more small
+
+// height rules
+$height-base: 34px;
+$height-lg: 40px;
+$height-sm: 26px;
+
+// experro custom padding for input
+
+// $large-input: 8px 12px;
+// $medium-input: 5px 12px;
+
+// The background colors for active and hover states for things like
+// list items or table cells.
+$item-active-bg: $blue-0;
+$item-hover-bg: $blue-0;
+
+// ICONFONT
+$iconfont-css-prefix: anticon;
+
+// LINK
+$link-color: $primary-color;
+$link-hover-color: $primary-color-hover;
+$link-active-color: $primary-color-active;
+$link-decoration: none;
+$link-hover-decoration: none;
+$link-focus-decoration: none;
+$link-focus-outline: 0;
+
+// Animation
+$ease-base-out: cubic-bezier(0.7, 0.3, 0.1, 1);
+$ease-base-in: cubic-bezier(0.9, 0, 0.3, 0.7);
+$ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+$ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+$ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+$ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+$ease-in-out-back: cubic-bezier(0.71, -0.46, 0.29, 1.46);
+$ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+$ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+$ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+$ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+$ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+$ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+$transition-default: all 300ms ease-in-out 0s;
+
+// Outline
+$outline-blur-size: 0;
+$outline-width: 2px;
+$outline-color: $primary-color; // No use anymore
+$outline-fade: 20%;
+
+// Disabled states
+$disabled-color: fade(#000, 25%);
+$disabled-bg: $background-color-light;
+$disabled-active-bg: tint($black, 90%);
+$disabled-color-dark: fade(#fff, 35%);

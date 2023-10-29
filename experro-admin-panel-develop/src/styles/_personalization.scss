@@ -1,0 +1,231 @@
+//Personalization Page CSS
+
+.merchandising-section {
+  &.personalization-section {
+    .merchandising-sidebar {
+      padding: 0;
+      > .sidebar-top-section {
+        height: calc(100vh - 94px);
+        &::-webkit-scrollbar {
+          width: 3px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: $border-color-split;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: $text-color-gray-light;
+        }
+      }
+      .personalization-main-collapse {
+        border-bottom: 1px solid $border-color-split;
+        &.ant-collapse > .ant-collapse-item {
+          margin-bottom: 0;
+          > .ant-collapse-header {
+            background-color: transparent;
+            border: none;
+            // border-bottom: 1px solid $border-color-split;
+            border-radius: 0;
+            align-items: center;
+            padding: 11px 12px;
+            .ant-collapse-header-text {
+              font-weight: 600;
+              font-size: 14px;
+              line-height: 18px;
+              color: $text-color;
+              width: calc(100% - 144px);
+            }
+            .ant-collapse-extra {
+              opacity: 1;
+              width: 120px;
+              .ant-form-item {
+                margin-bottom: 0;
+              }
+              .ant-row.ant-form-item-row {
+                align-items: center;
+              }
+              .ant-form-item-control-input {
+                min-height: auto;
+              }
+              .ant-form-item-label>label {
+                margin: 0;
+                height: auto;
+              }
+            }
+          }
+          .ant-collapse-content {
+            border: none;
+            background-color: transparent;
+            border-radius: 0;
+            > .ant-collapse-content-box {
+              padding: 12px 16px 16px 16px;
+              .merchandising-rules-collapse {
+                margin-top: 16px;
+                .ant-collapse-header {
+                  padding: 10px 8px;
+                  border: 1px solid $border-color-base;
+                }
+                .ant-collapse-content-box {
+                  padding: 0;
+                }
+                .personalization-tabs-section {
+                  margin: 0;
+                }
+                .ant-collapse-item-active {
+                  .ant-collapse-header {
+                    border-bottom-color: transparent;
+                    border-radius: 4px 4px 0 0;
+                  }
+                  .personalization-tabs-section {
+                    border-top-color: transparent;
+                    border-radius: 0 0 4px 4px;
+                  }
+                }
+              }
+            }
+          }
+          &.ant-collapse-item-active {
+            .ant-collapse-header {
+              border-color: transparent;
+            }
+          }
+        }
+        // + .personalization-main-collapse {
+        //   border-top: 1px solid $border-color-split;
+        // }
+        .custom-algorithm {
+          margin: 16px 0;
+        }
+      }
+
+      .label-switch-inline .ant-form-item-label > label {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 18px;
+        color: $text-color-gray-light;
+      }
+    }
+  }
+}
+
+.personalization-tabs-section {
+  padding: 12px;
+  border-radius: 4px;
+  margin: 12px;
+  border: 1px solid $border-color-base;
+  background-color: $white;
+  .sidebar-top-section.collapse-sidebar-section, .sidebar-top-section {
+    height: auto;
+  }
+  .sidebar-bottom-section {
+    padding: 12px 0 0 0;
+    margin-top: 32px;
+  }
+  .ant-tabs-tab {
+    font-weight: 400;
+    width: 24.99%;
+    padding-top: 0;
+  }
+  &.with-no-bg {
+    padding: 16px;
+    border: none;
+    background-color: transparent;
+    margin: 0px;
+  }
+}
+
+.single-input {
+  margin: 16px 0 0 0;
+  .ant-row.ant-form-item-row {
+    align-items: center;
+  }
+  .ant-form-item-label>label {
+    margin: 0;
+  }
+  .ant-form-item-control-input {
+    min-height: auto;
+  }
+  .ant-form-item-label>label {
+    height: auto;
+  }
+}
+
+
+
+.merchandising-sidebar {
+  .ant-form {
+    &.custom-algorithm {
+      height: auto;
+      margin: 16px;
+      .sidebar-top-section {
+        height: auto;
+      }
+      .sidebar-bottom-section {
+        padding: 12px 0 0 0;
+        margin-top: 32px;
+      }
+    }
+  }
+}
+
+.rule-condition {
+  &.reverce-rule-condition {
+    .ant-form-item-control-input-content > div.ant-form-item {
+      &:first-child {
+        width: 100%;
+      }
+      &:nth-child(3) {
+        width: 48%;
+        margin-top: auto;
+        margin-bottom: 32px;
+      }
+    }
+  }
+}
+
+.label-switch-inline-second {
+  display: flex;
+  width: 100% !important;
+  .ant-form-item-label {
+    width: auto;
+  }
+}
+
+.merchandising-sidebar .rule-condition {
+  .custom-algorithm-panel {
+    .boost-slider {
+      .ant-form-item-control-input-content {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.add-store-page {
+  padding: 0 32px 24px 32px;
+}
+
+.merchandising-sidebar .rule-condition .boost-slider .ant-form-item-control-input-content {
+  display: block;
+}
+
+.merchandising-detail-header {
+  flex-wrap: nowrap;
+  .headerleft {
+    @media screen and (max-width: 1599px) {
+      width: 44%;
+    }
+  }
+  .headerright {
+    width: auto;
+  }
+  .two-date-picker .ant-form-inline .ant-form-item-with-help{
+    margin-bottom: 0px;
+    .ant-form-item-explain {
+      position: absolute;
+      bottom: -18px;
+    }
+  }
+}

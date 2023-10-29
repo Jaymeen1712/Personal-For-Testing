@@ -1,0 +1,22 @@
+body{background: #E5E5E5;}
+.loadermain{
+  background: #E5E5E5;  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  img{
+    width: 100px;
+  }
+  span{
+    display: block;
+    font-weight: 400;
+    font-size: 14px;
+    color: #374151;
+  }
+}
+.progressbarmain{
+  width: 200px;
+  margin-bottom: 32px;
+  margin-top: 54px;
+}
