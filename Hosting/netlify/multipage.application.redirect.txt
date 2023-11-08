@@ -1,0 +1,5 @@
+make one file in public 
+
+name: _redirects
+
+in file: /* /index.html 200
